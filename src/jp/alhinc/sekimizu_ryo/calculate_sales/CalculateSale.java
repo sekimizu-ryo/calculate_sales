@@ -167,7 +167,7 @@ public class CalculateSale {
 				}
 		}catch(FileNotFoundException e){
 			System.out.println("売上ファイルが存在しません。");
-			}catch(IOException e){
+		}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました。");
 		}finally{
 			try{
@@ -241,7 +241,7 @@ public class CalculateSale {
 		for (Entry<String,Long> s : entries) {
 			//商品の集計結果　書き込み
 			cw.write(s.getKey());
-	        cw.write(",");
+			cw.write(",");
             cw.write(commdityNameMap.get(s.getKey()));
             cw.write(",");
             cw.write(String.valueOf(s.getValue()));
