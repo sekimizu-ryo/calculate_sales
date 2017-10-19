@@ -76,7 +76,7 @@ public class CalculateSale {
 				System.out.println("商品定義ファイルが存在しません。");
 				}catch(IOException e){
 					System.out.println("予期せぬエラーが発生しました。");
-			} finally{
+			}finally{
 				try{
 					if(cr  != null){
 						cr.close();
@@ -167,15 +167,15 @@ public class CalculateSale {
 			System.out.println("売上ファイルが存在しません。");
 			}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました。");
-			}finally{
-				try{
-					if(rl != null){
-						rl.close();
-						}
-					}catch(IOException e){
-						System.out.println("予期せぬエラーが発生しました。");
-						}
-				}
+		}finally{
+			try{
+				if(rl != null){
+					rl.close();
+					}
+				}catch(IOException e){
+					System.out.println("予期せぬエラーが発生しました。");
+					}
+			}
 	    BufferedWriter bw = null;
 	    try {
 		//Listの生成
@@ -211,13 +211,13 @@ public class CalculateSale {
 
 	} finally{
 		try{
-			if(bw != null){
-				bw.close();
-				}
-			}catch(IOException e){
-				System.out.println("予期せぬエラーが発生しました。");
-				}
-		}
+		if(bw != null){
+			bw.close();
+			}
+		}catch(IOException e){
+			System.out.println("予期せぬエラーが発生しました。");
+			}
+	}
 	BufferedWriter cw = null;
 	try {
 		//Listの生成
@@ -251,12 +251,12 @@ public class CalculateSale {
 
 	}finally{
 		try{
-			if(cw != null){
-				cw.close();
-				}
-			}catch(IOException e){
-				System.out.println("予期せぬエラーが発生しました。");
-				}
+		if(cw != null){
+			cw.close();
+			}
+		}catch(IOException e){
+			System.out.println("予期せぬエラーが発生しました。");
+			}
 		}
 	}
-	}
+}
