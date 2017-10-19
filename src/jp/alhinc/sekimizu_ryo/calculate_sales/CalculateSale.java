@@ -25,6 +25,10 @@ public class CalculateSale {
 
 		BufferedReader br =null;
 		try {
+			if(args.length != 1){
+				System.out.println("予期せぬエラーが発生しました");
+				return;
+			}
 			File branchFile = new File(args[0],"branch.lst");
 			FileReader bfr = new FileReader(branchFile);
 			br= new BufferedReader(bfr);
@@ -35,29 +39,37 @@ public class CalculateSale {
 				//matchesで0～9の3桁の値を取得しかつ2個の配列を取得
 				if (!items[0].matches("[0-9]{3}$")|| items.length != 2)
 				{
-					System.out.println("支店定義ファイルのフォーマットが不正です。");
+					System.out.println("支店定義ファイルのフォーマットが不正です");
 					return;
 					}
 				branchNameMap.put(items[0],items[1]);
 				branchSaleMap.put(items[0],0l);
 				}
 		}catch(FileNotFoundException e){
-			System.out.println("支店定義ファイルが存在しません。");
+			System.out.println("支店定義ファイルが存在しません");
+			return;
 
 		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}finally{
 			try{
 				if(br  != null){
 					br.close();
 					}
 				}catch(IOException e){
-				System.out.println("予期せぬエラーが発生しました。");
+				System.out.println("予期せぬエラーが発生しました");
+				return;
 				}
 			}
 
 		BufferedReader cr = null;
 		try {
+			if(args.length != 1){
+				System.out.println("予期せぬエラーが発生しました");
+				return;
+			}
+
 			File commodityFile = new File(args[0],"commodity.lst");
 			FileReader cfr = new FileReader(commodityFile);
 			cr = new BufferedReader(cfr);
@@ -67,23 +79,26 @@ public class CalculateSale {
 				String[] items2 = s2.split(",",-1);
 				////matchesで0～9、A～Zの3桁の値を取得しかつ2個の配列を取得
 				if (!items2[0].matches("[0-9A-Z]{8}$")|| items2.length != 2) {
-					System.out.println("商品定義ファイルフォーマットが不正です。");
+					System.out.println("商品定義ファイルフォーマットが不正です");
 					return;
 					}
 				commdityNameMap.put(items2[0],items2[1]);
 				commdityMap.put(items2[0],0l);
 				}
 			}catch(FileNotFoundException e){
-				System.out.println("商品定義ファイルが存在しません。");
+				System.out.println("商品定義ファイルが存在しません");
+				return;
 				}catch(IOException e){
-					System.out.println("予期せぬエラーが発生しました。");
+					System.out.println("予期せぬエラーが発生しました");
+					return;
 			}finally{
 				try{
 					if(cr  != null){
 						cr.close();
 						}
 					}catch(IOException e){
-						System.out.println("予期せぬエラーが発生しました。");
+						System.out.println("予期せぬエラーが発生しました");
+						return;
 						}
 				}
 
@@ -97,7 +112,7 @@ public class CalculateSale {
 			for(int i =0; i < saleList.length; i++){
 				//matchesを使って　配列を8桁のかつ.rcdのものを抽出する。
 				//ただしsalelistはFile型であるため、getName();を取得しないと使用できない。
-				if(saleList[i].getName().matches("^[0-9]{8}.rcd$")){
+				if(saleList[i].getName().matches("^[0-9]{8}.rcd")){
 					rcdList.add(saleList[i]);
 					}
 				}
@@ -110,8 +125,8 @@ public class CalculateSale {
 				int comParison;
 				//比較の処理
 				comParison = rcdValue2 - rcdValue;
-				if(comParison !=  1){
-					System.out.println("売上ファイル名が連番になっていません。");
+				if(comParison !=  1||!saleList[i+1].getName().matches("^[0-9]{8}.rcd")){
+					System.out.println("売上ファイル名が連番になっていません");
 					return;
 				}
 			}
@@ -126,14 +141,14 @@ public class CalculateSale {
 					rcdData.add(s3);
 					}
 
-				if (rcdData.size() >= 4) {
-					System.out.println(rcdList.get(i)+"のフォーマットが不正です。");
+				if (rcdData.size() <= 2|| rcdData.size() >= 4) {
+					System.out.println(saleList[i].getName()+"のフォーマットが不正です");
 					return ;
 					}
 
 				// 支店集計
 				if(branchSaleMap.containsKey(rcdData.get(0)) == false){
-					System.out.println(rcdList.get(i)+"の支店コードが不正です。処理を終了します。");
+					System.out.println(saleList[i].getName()+"の支店コードが不正です");
 					return;
 				}
 				branchSaleMap.get(rcdData.get(0));
@@ -143,14 +158,14 @@ public class CalculateSale {
 				branchTotal = rcdDataCast + branchSaleMap.get(rcdData.get(0));
 				branchSaleMap.put(rcdData.get(0),branchTotal);
 
-				if (String.valueOf(branchTotal).length() >= 10) {
-					System.out.println("合計金額が10桁超えました。");
+				if (String.valueOf(branchTotal).length() > 10) {
+					System.out.println("合計金額が10桁超えました");
 					return ;
 					}
 
 				//商品集計
 				if(commdityMap.containsKey(rcdData.get(1)) == false){
-					System.out.println(rcdList.get(i)+"の商品コードが不正です。");
+					System.out.println(saleList[i].getName()+"の商品コードが不正です");
 					return;
 				}
 				commdityMap.get(rcdData.get(1));
@@ -160,22 +175,25 @@ public class CalculateSale {
 				commdityTotal = rcdDataCast2 + commdityMap.get(rcdData.get(1));
 				commdityMap.put(rcdData.get(1),commdityTotal);
 
-				if (String.valueOf(commdityTotal).length() >= 10) {
-					System.out.println("合計金額が10桁超えました。");
+				if (String.valueOf(commdityTotal).length() > 10) {
+					System.out.println("合計金額が10桁超えました");
 					return ;
 					}
 				}
 		}catch(FileNotFoundException e){
-			System.out.println("売上ファイルが存在しません。");
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}catch(IOException e){
-				System.out.println("予期せぬエラーが発生しました。");
+				System.out.println("予期せぬエラーが発生しました");
+				return;
 		}finally{
 			try{
 				if(rl != null){
 					rl.close();
 					}
 				}catch(IOException e){
-					System.out.println("予期せぬエラーが発生しました。");
+					System.out.println("予期せぬエラーが発生しました");
+					return;
 					}
 			}
 
@@ -207,18 +225,19 @@ public class CalculateSale {
 	            }
 
 	}catch(FileNotFoundException e){
-		System.out.println("売上データが存在しません。");
-
+		System.out.println("予期せぬエラーが発生しました");
+		return;
 	}catch(IOException e){
-		System.out.println("予期せぬエラーが発生しました。");
-
+		System.out.println("予期せぬエラーが発生しました");
+		return;
 	} finally{
 		try{
 		if(bw != null){
 			bw.close();
 			}
 		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 			}
 	}
 
@@ -248,10 +267,12 @@ public class CalculateSale {
             cw.newLine();
             }
 	}catch(FileNotFoundException e){
-		System.out.println("売上データが存在しません。");
+		System.out.println("予期せぬエラーが発生しました");
+		return;
 
 	}catch(IOException e){
-		System.out.println("予期せぬエラーが発生しました。");
+		System.out.println("予期せぬエラーが発生しました");
+		return;
 
 	}finally{
 		try{
@@ -259,7 +280,8 @@ public class CalculateSale {
 			cw.close();
 			}
 		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 			}
 		}
 	}
