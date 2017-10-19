@@ -1,5 +1,4 @@
 package jp.alhinc.sekimizu_ryo.calculate_sales;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -47,16 +46,15 @@ public class CalculateSale {
 
 		}catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました。");
-			}finally{
-				try{
-					if(br  != null){
-						br.close();
-						}
-					}catch(IOException e){
-					System.out.println("予期せぬエラーが発生しました。");
+		}finally{
+			try{
+				if(br  != null){
+					br.close();
 					}
+				}catch(IOException e){
+				System.out.println("予期せぬエラーが発生しました。");
 				}
-
+			}
 		BufferedReader cr = null;
 		try {
 			File commodityFile = new File(args[0],"commodity.lst");
@@ -78,15 +76,15 @@ public class CalculateSale {
 				System.out.println("商品定義ファイルが存在しません。");
 				}catch(IOException e){
 					System.out.println("予期せぬエラーが発生しました。");
-				} finally{
-					try{
-						if(cr  != null){
-							cr.close();
-							}
-						}catch(IOException e){
-							System.out.println("予期せぬエラーが発生しました。");
-							}
-					}
+			} finally{
+				try{
+					if(cr  != null){
+						cr.close();
+						}
+					}catch(IOException e){
+						System.out.println("予期せぬエラーが発生しました。");
+						}
+				}
 		BufferedReader rl =null;
 		try {
 			//rcdファイルを読み込む処理
@@ -165,19 +163,19 @@ public class CalculateSale {
 					return ;
 					}
 				}
-			}catch(FileNotFoundException e){
-				System.out.println("売上ファイルが存在しません。");
-				}catch(IOException e){
-					System.out.println("予期せぬエラーが発生しました。");
-					}finally{
-						try{
-							if(rl != null){
-								rl.close();
-								}
-							}catch(IOException e){
-								System.out.println("予期せぬエラーが発生しました。");
-								}
+		}catch(FileNotFoundException e){
+			System.out.println("売上ファイルが存在しません。");
+			}catch(IOException e){
+				System.out.println("予期せぬエラーが発生しました。");
+			}finally{
+				try{
+					if(rl != null){
+						rl.close();
 						}
+					}catch(IOException e){
+						System.out.println("予期せぬエラーが発生しました。");
+						}
+				}
 	    BufferedWriter bw = null;
 	    try {
 		//Listの生成
