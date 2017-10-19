@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 
 //今後　合計でMapを4つ使用することになる。
 //キャストは売上額のときだけ使用する
-public class Uriage {
+public class CalculateSale {
 	public static void main(String[] args) {
 		HashMap<String , Long>branchSaleMap = new HashMap<String , Long>();
 		HashMap<String , Long>commdityMap = new HashMap<String , Long>();
