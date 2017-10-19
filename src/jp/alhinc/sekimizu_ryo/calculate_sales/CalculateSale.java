@@ -1,4 +1,4 @@
-package jp.alhinc.sekimizu_ryo.calculate_sale;
+package jp.alhinc.sekimizu_ryo.calculate_sales;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
