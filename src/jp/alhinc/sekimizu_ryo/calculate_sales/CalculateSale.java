@@ -55,6 +55,7 @@ public class CalculateSale {
 				System.out.println("予期せぬエラーが発生しました。");
 				}
 			}
+
 		BufferedReader cr = null;
 		try {
 			File commodityFile = new File(args[0],"commodity.lst");
@@ -85,6 +86,7 @@ public class CalculateSale {
 						System.out.println("予期せぬエラーが発生しました。");
 						}
 				}
+
 		BufferedReader rl =null;
 		try {
 			//rcdファイルを読み込む処理
@@ -176,8 +178,9 @@ public class CalculateSale {
 					System.out.println("予期せぬエラーが発生しました。");
 					}
 			}
-	    BufferedWriter bw = null;
-	    try {
+
+		BufferedWriter bw = null;
+	try {
 		//Listの生成
 		List<Map.Entry<String,Long>> entries =
 				new ArrayList<Map.Entry<String,Long>>(branchSaleMap.entrySet());
@@ -218,6 +221,7 @@ public class CalculateSale {
 			System.out.println("予期せぬエラーが発生しました。");
 			}
 	}
+
 	BufferedWriter cw = null;
 	try {
 		//Listの生成
