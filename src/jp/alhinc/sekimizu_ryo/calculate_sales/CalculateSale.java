@@ -19,16 +19,17 @@ import java.util.Map.Entry;
 
 public class CalculateSale {
 	public static void main(String[] args) throws IOException {
+
 		HashMap<String , Long>branchSaleMap = new HashMap<String , Long>();
-		HashMap<String , Long>commdityMap = new HashMap<String , Long>();
+		HashMap<String , Long>commodityMap = new HashMap<String , Long>();
 		HashMap<String , String>branchNameMap = new HashMap<String , String>();
-		HashMap<String , String>commdityNameMap = new HashMap<String , String>();
+		HashMap<String , String>commodityNameMap = new HashMap<String , String>();
 		BufferedReader br =null;
 		try {
 			if(args.length != 1){
 				System.out.println("予期せぬエラーが発生しました");
 				return;
-				}
+			}
 			File branchFile = new File(args[0],"branch.lst");
 			FileReader bfr = new FileReader(branchFile);
 			br= new BufferedReader(bfr);
@@ -41,7 +42,7 @@ public class CalculateSale {
 				{
 					System.out.println("支店定義ファイルのフォーマットが不正です");
 					return;
-					}
+				}
 				branchNameMap.put(items[0],items[1]);
 				branchSaleMap.put(items[0],0l);
 			}
@@ -55,11 +56,11 @@ public class CalculateSale {
 				try{
 					if(br  != null){
 						br.close();
-						}
+					}
 					}catch(IOException e){
 						System.out.println("予期せぬエラーが発生しました");
 						return;
-						}
+					}
 			}
 
 		BufferedReader cr = null;
@@ -76,12 +77,12 @@ public class CalculateSale {
 			{
 				String[] items2 = s2.split(",",-1);
 				////matchesで0～9、A～Zの3桁の値を取得しかつ2個の配列を取得
-				if (!items2[0].matches("[0-9A-Z]{8}$")|| items2.length != 2) {
+				if (!items2[0].matches("[0-9A-Za-z]{8}$")|| items2.length != 2) {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
-					}
-				commdityNameMap.put(items2[0],items2[1]);
-				commdityMap.put(items2[0],0l);
+				}
+				commodityNameMap.put(items2[0],items2[1]);
+				commodityMap.put(items2[0],0l);
 			}
 			}catch(FileNotFoundException e){
 				System.out.println("商品定義ファイルが存在しません");
@@ -93,11 +94,11 @@ public class CalculateSale {
 				try{
 					if(cr  != null){
 						cr.close();
-						}
+					}
 			}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました");
 				return;
-				}
+			}
 			}
 
 		BufferedReader rl =null;
@@ -106,6 +107,12 @@ public class CalculateSale {
 			File saleFile = new File(args[0]);
 			//指定のディレクトリにあるファイル一覧を一括で取得するため、listFilesというメソッドを使用
 			File[] saleList = saleFile.listFiles();
+			for(int i=0;  i < saleList.length; i++){
+			if(saleList[i].isDirectory() ){
+				System.out.println("売上ファイル名が連番になっていません");
+				return;
+			}
+			}
 			ArrayList<File> rcdList= new ArrayList<File>();
 			for(int i =0; i < saleList.length; i++){
 				//matchesを使って　配列を8桁のかつ.rcdのものを抽出する。
@@ -116,10 +123,6 @@ public class CalculateSale {
 			}
 			for(int i=0; i< rcdList.size()-1; i++){
 				//000001.rcd=1代入の処理をする。substringメソッドを使用して先頭　8文字を抜き出す。
-				if(saleList[i].isDirectory() ){
-					System.out.println("売上ファイル名が連番になっていません");
-					return;
-				}
 				String rcdex = saleList[i].getName().substring(0, 8);
 				String rcdex2 = saleList[i+1].getName().substring(0, 8);
 				int rcdValue = Integer.parseInt(rcdex);
@@ -140,7 +143,7 @@ public class CalculateSale {
 				ArrayList<String> rcdData= new ArrayList<String>();
 				while((s3 = rl.readLine()) != null){
 					rcdData.add(s3);
-					}
+				}
 				if (rcdData.size() <= 2|| rcdData.size() >= 4) {
 					System.out.println(saleList[i].getName()+"のフォーマットが不正です");
 					return ;
@@ -166,16 +169,16 @@ public class CalculateSale {
 					return ;
 				}
 				//商品集計
-				if(commdityMap.containsKey(rcdData.get(1)) == false){
+				if(commodityMap.containsKey(rcdData.get(1)) == false){
 					System.out.println(saleList[i].getName()+"の商品コードが不正です");
 					return;
 				}
-				commdityMap.get(rcdData.get(1));
+				commodityMap.get(rcdData.get(1));
 				rcdData.get(2);
 				long rcdDataCast2 = Long.parseLong(rcdData.get(2));
 				long commdityTotal =0;
-				commdityTotal = rcdDataCast2 + commdityMap.get(rcdData.get(1));
-				commdityMap.put(rcdData.get(1),commdityTotal);
+				commdityTotal = rcdDataCast2 + commodityMap.get(rcdData.get(1));
+				commodityMap.put(rcdData.get(1),commdityTotal);
 				if (String.valueOf(commdityTotal).length() > 10) {
 					System.out.println("合計金額が10桁を超えました");
 					return ;
@@ -241,7 +244,7 @@ public class CalculateSale {
 		try {
 			//Listの生成
 			List<Map.Entry<String,Long>> entries =
-					new ArrayList<Map.Entry<String,Long>>(commdityMap.entrySet());
+					new ArrayList<Map.Entry<String,Long>>(commodityMap.entrySet());
 			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>()
 			{
 				@Override
@@ -249,14 +252,14 @@ public class CalculateSale {
 					return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
 				}
 			});
-			File commdityOutFile = new File(args[0],"commdity.out");
-			FileWriter cfw = new FileWriter(commdityOutFile);
+			File commodityOutFile = new File(args[0],"commodity.out");
+			FileWriter cfw = new FileWriter(commodityOutFile);
 			cw = new BufferedWriter(cfw);
 			for (Entry<String,Long> s : entries) {
 				//商品の集計結果　書き込み
 				cw.write(s.getKey());
 				cw.write(",");
-				cw.write(commdityNameMap.get(s.getKey()));
+				cw.write(commodityNameMap.get(s.getKey()));
 				cw.write(",");
 				cw.write(String.valueOf(s.getValue()));
 				cw.newLine();
@@ -277,5 +280,5 @@ public class CalculateSale {
 					return;
 				}
 			}
-		}
 	}
+}
