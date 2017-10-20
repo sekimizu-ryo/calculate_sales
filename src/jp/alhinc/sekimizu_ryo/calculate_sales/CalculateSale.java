@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 //今後　合計でMapを4つ使用することになる。
 //キャストは売上額のときだけ使用する
+
 public class CalculateSale {
 	public static void main(String[] args) throws IOException {
 		HashMap<String , Long>branchSaleMap = new HashMap<String , Long>();
@@ -25,10 +26,6 @@ public class CalculateSale {
 
 		BufferedReader br =null;
 		try {
-			if(args.length != 1){
-				System.out.println("予期せぬエラーが発生しました");
-				return;
-			}
 			File branchFile = new File(args[0],"branch.lst");
 			FileReader bfr = new FileReader(branchFile);
 			br= new BufferedReader(bfr);
@@ -118,6 +115,11 @@ public class CalculateSale {
 				}
 			for(int i=0; i< rcdList.size()-1; i++){
 				//000001.rcd=1代入の処理をする。substringメソッドを使用して先頭　8文字を抜き出す。
+				if(saleList[i].isDirectory() ){
+					System.out.println("売上ファイル名が連番になっていません");
+					return;
+				}
+
 				String rcdex = saleList[i].getName().substring(0, 8);
 				String rcdex2 = saleList[i+1].getName().substring(0, 8);
 				int rcdValue = Integer.parseInt(rcdex);
@@ -128,7 +130,7 @@ public class CalculateSale {
 				if(comParison !=  1||!saleList[i+1].getName().matches("^[0-9]{8}.rcd")){
 					System.out.println("売上ファイル名が連番になっていません");
 					return;
-				}
+					}
 			}
 				//rcdデータを読み込む処理
 			for(int i =0; i <rcdList.size() ; i++){
