@@ -107,17 +107,11 @@ public class CalculateSale {
 			File saleFile = new File(args[0]);
 			//指定のディレクトリにあるファイル一覧を一括で取得するため、listFilesというメソッドを使用
 			File[] saleList = saleFile.listFiles();
-			for(int i=0;  i < saleList.length; i++){
-			if(saleList[i].isDirectory() ){
-				System.out.println("売上ファイル名が連番になっていません");
-				return;
-			}
-			}
 			ArrayList<File> rcdList= new ArrayList<File>();
 			for(int i =0; i < saleList.length; i++){
 				//matchesを使って　配列を8桁のかつ.rcdのものを抽出する。
 				//ただしsalelistはFile型であるため、getName();を取得しないと使用できない。
-				if(saleList[i].getName().matches("^[0-9]{8}.rcd")){
+				if(saleList[i].getName().matches("^[0-9]{8}.rcd")&&!saleList[i].isDirectory()){
 					rcdList.add(saleList[i]);
 				}
 			}
@@ -137,7 +131,7 @@ public class CalculateSale {
 			}
 			//rcdデータを読み込む処理
 			for(int i =0; i <rcdList.size() ; i++){
-				FileReader rfl = new FileReader(saleList[i]);
+				FileReader rfl = new FileReader(rcdList.get(i));
 				rl = new BufferedReader(rfl);
 				String s3;
 				ArrayList<String> rcdData= new ArrayList<String>();
@@ -145,12 +139,12 @@ public class CalculateSale {
 					rcdData.add(s3);
 				}
 				if (rcdData.size() <= 2|| rcdData.size() >= 4) {
-					System.out.println(saleList[i].getName()+"のフォーマットが不正です");
+					System.out.println(rcdList.get(i).getName()+"のフォーマットが不正です");
 					return ;
 				}
 				// 支店集計
 				if(branchSaleMap.containsKey(rcdData.get(0)) == false){
-					System.out.println(saleList[i].getName()+"の支店コードが不正です");
+					System.out.println(rcdList.get(i).getName()+"の支店コードが不正です");
 					return;
 				}
 				branchSaleMap.get(rcdData.get(0));
@@ -170,7 +164,7 @@ public class CalculateSale {
 				}
 				//商品集計
 				if(commodityMap.containsKey(rcdData.get(1)) == false){
-					System.out.println(saleList[i].getName()+"の商品コードが不正です");
+					System.out.println(rcdList.get(i).getName()+"の商品コードが不正です");
 					return;
 				}
 				commodityMap.get(rcdData.get(1));
