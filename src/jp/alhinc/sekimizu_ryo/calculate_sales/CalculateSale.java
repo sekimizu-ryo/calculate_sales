@@ -123,14 +123,14 @@ public class CalculateSale {
 			}
 			for(int i=0; i< rcdList.size()-1; i++){
 				//000001.rcd=1代入の処理をする。substringメソッドを使用して先頭　8文字を抜き出す。
-				String rcdex = saleList[i].getName().substring(0, 8);
-				String rcdex2 = saleList[i+1].getName().substring(0, 8);
+				String rcdex = rcdList.get(i).getName().substring(0, 8);
+				String rcdex2 =rcdList.get(i+1).getName().substring(0, 8);
 				int rcdValue = Integer.parseInt(rcdex);
 				int rcdValue2 = Integer.parseInt(rcdex2);
 				int comParison;
 				//比較の処理
 				comParison = rcdValue2 - rcdValue;
-				if(comParison !=  1||!saleList[i+1].getName().matches("^[0-9]{8}.rcd")){
+				if(comParison !=  1||!rcdList.get(i+1).getName().matches("^[0-9]{8}.rcd")){
 					System.out.println("売上ファイル名が連番になっていません");
 					return;
 				}
