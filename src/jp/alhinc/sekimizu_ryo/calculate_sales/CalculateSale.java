@@ -26,6 +26,10 @@ public class CalculateSale {
 
 		BufferedReader br =null;
 		try {
+			if(args.length != 1){
+				System.out.println("予期せぬエラーが発生しました");
+				return;
+			}
 			File branchFile = new File(args[0],"branch.lst");
 			FileReader bfr = new FileReader(branchFile);
 			br= new BufferedReader(bfr);
@@ -62,6 +66,7 @@ public class CalculateSale {
 
 		BufferedReader cr = null;
 		try {
+
 			if(args.length != 1){
 
 				System.out.println("予期せぬエラーが発生しました");
@@ -139,15 +144,15 @@ public class CalculateSale {
 				rl = new BufferedReader(rfl);
 				String s3;
 				ArrayList<String> rcdData= new ArrayList<String>();
-
 				while((s3 = rl.readLine()) != null){
 					rcdData.add(s3);
 					}
 
 				if (rcdData.size() <= 2|| rcdData.size() >= 4) {
+					System.out.println(rcdData.size());
 					System.out.println(saleList[i].getName()+"のフォーマットが不正です");
 					return ;
-					}
+				}
 
 				// 支店集計
 				if(branchSaleMap.containsKey(rcdData.get(0)) == false){
