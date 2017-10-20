@@ -77,7 +77,7 @@ public class CalculateSale {
 				String[] items2 = s2.split(",",-1);
 				////matchesで0～9、A～Zの3桁の値を取得しかつ2個の配列を取得
 				if (!items2[0].matches("[0-9A-Z]{8}$")|| items2.length != 2) {
-					System.out.println("商品定義ファイルフォーマットが不正です");
+					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
 					}
 				commdityNameMap.put(items2[0],items2[1]);
@@ -142,7 +142,6 @@ public class CalculateSale {
 					rcdData.add(s3);
 					}
 				if (rcdData.size() <= 2|| rcdData.size() >= 4) {
-					System.out.println(rcdData.size());
 					System.out.println(saleList[i].getName()+"のフォーマットが不正です");
 					return ;
 				}
@@ -163,7 +162,7 @@ public class CalculateSale {
 				branchSaleMap.put(rcdData.get(0),branchTotal);
 
 				if (String.valueOf(branchTotal).length() > 10) {
-					System.out.println("合計金額が10桁超えました");
+					System.out.println("合計金額が10桁を超えました");
 					return ;
 				}
 				//商品集計
@@ -178,7 +177,7 @@ public class CalculateSale {
 				commdityTotal = rcdDataCast2 + commdityMap.get(rcdData.get(1));
 				commdityMap.put(rcdData.get(1),commdityTotal);
 				if (String.valueOf(commdityTotal).length() > 10) {
-					System.out.println("合計金額が10桁超えました");
+					System.out.println("合計金額が10桁を超えました");
 					return ;
 				}
 			}
