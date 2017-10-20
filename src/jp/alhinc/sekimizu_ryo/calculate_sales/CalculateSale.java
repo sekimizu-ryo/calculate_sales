@@ -63,6 +63,7 @@ public class CalculateSale {
 		BufferedReader cr = null;
 		try {
 			if(args.length != 1){
+
 				System.out.println("予期せぬエラーが発生しました");
 				return;
 			}
