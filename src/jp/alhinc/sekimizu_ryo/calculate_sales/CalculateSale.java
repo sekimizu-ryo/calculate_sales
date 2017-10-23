@@ -70,13 +70,14 @@ public class CalculateSale {
 		String mat="[0-9]{3}$";
 		String commodityName ="商品";
 		String mat2="[0-9A-Za-z]{8}$";
-		if(filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,mat) == false
-				||filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,mat2) == false){
-			return;
+
+		if(!filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,mat)){
+			return ;
 		}
 
-		filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,mat);
-		filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,mat2);
+		if(!filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,mat2)){
+			return;
+		}
 
 		BufferedReader rl =null;
 		try {
@@ -172,11 +173,17 @@ public class CalculateSale {
 			}
 		}
 
-	  FileOut(branchSaleMap,branchNameMap,args[0], "branch.out");
-	  FileOut(commodityMap,commodityNameMap,args[0],"commodity.out");
+	  if(!fileOut(branchSaleMap,branchNameMap,args[0], "branch.out")){
+		  return;
+	  }
+
+	  if(!fileOut(commodityMap,commodityNameMap,args[0],"commodity.out")){
+		  return;
+	  }
+
 	}
 
-	public static boolean  FileOut(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,
+	public static boolean  fileOut(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,
 			String  dirPath, String fileName){
 		BufferedWriter bw = null;
 		try {
