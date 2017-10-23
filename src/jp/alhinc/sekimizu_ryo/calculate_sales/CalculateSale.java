@@ -46,14 +46,14 @@ public class CalculateSale {
 			try{
 				if(br  != null){
 					br.close();
-					return true;
+
 				}
 			}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました");
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -63,16 +63,16 @@ public class CalculateSale {
 		HashMap<String , String>branchNameMap = new HashMap<String , String>();
 		HashMap<String , String>commodityNameMap = new HashMap<String , String>();
 		if(args.length != 1){
-		System.out.println("予期せぬエラーが発生しました");
-		return;
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}
 
-        String branchName ="支店";
-        String m="[0-9]{3}$";
-		Filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,m);
+		String branchName ="支店";
+		String mat="[0-9]{3}$";
+		Filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,mat);
 		String commodityName ="商品";
-		String m2="[0-9A-Za-z]{8}$";
-		Filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,m2);
+		String mat2="[0-9A-Za-z]{8}$";
+		Filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,mat2);
 
 		BufferedReader rl =null;
 		try {
@@ -208,13 +208,13 @@ public class CalculateSale {
 			try{
 				if(bw != null){
 					bw.close();
-					return true;
+
 				}
 			}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました");
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 }
