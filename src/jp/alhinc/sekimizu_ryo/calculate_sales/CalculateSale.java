@@ -16,28 +16,28 @@ import java.util.Map.Entry;
 
 //今後　合計でMapを4つ使用することになる。
 //キャストは売上額のときだけ使用する
-
 public class CalculateSale {
-	public static boolean  branchFile(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,String  dirPath, String fileName){
-		BufferedReader br =null;
+	public static boolean  Filein(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,String  dirPath, String fileName,String Name,String match){
+		BufferedReader br = null;
 		try {
-
-			File branchFile = new File(dirPath,fileName);
-			FileReader bfr = new FileReader(branchFile);
-			br= new BufferedReader(bfr);
+			File Filein = new File(dirPath,fileName);
+			FileReader bf = new FileReader(Filein);
+			br = new BufferedReader(bf);
 			String s;
-			while((s = br.readLine()) != null){
+			while((s = br.readLine()) != null)
+			{
 				String[] items = s.split(",",-1);
-				//matchesで0～9の3桁の値を取得しかつ2個の配列を取得
-				if (!items[0].matches("[0-9]{3}$")|| items.length != 2){
-					System.out.println("支店定義ファイルのフォーマットが不正です");
+				////matchesで0～9、A～Zの3桁の値を取得しかつ2個の配列を取得
+
+				if (!items[0].matches(match)|| items.length != 2) {
+					System.out.println(Name+"定義ファイルのフォーマットが不正です");
 					return false;
 				}
 				nameMap.put(items[0],items[1]);
 				saleMap.put(items[0],0l);
 			}
 		}catch(FileNotFoundException e){
-			System.out.println("支店定義ファイルが存在しません");
+			System.out.println(Name+"定義ファイルが存在しません");
 			return false;
 		}catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました");
@@ -46,44 +46,6 @@ public class CalculateSale {
 			try{
 				if(br  != null){
 					br.close();
-					return true;
-				}
-			}catch(IOException e){
-				System.out.println("予期せぬエラーが発生しました");
-				return false;
-			}
-		}
-		return false;
-	}
-
-	public static boolean  commodityFile(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,String  dirPath, String fileName){
-		BufferedReader cr = null;
-		try {
-			File commodityFile = new File(dirPath,fileName);
-			FileReader cfr = new FileReader(commodityFile);
-			cr = new BufferedReader(cfr);
-			String s2;
-			while((s2 = cr.readLine()) != null)
-			{
-				String[] items2 = s2.split(",",-1);
-				////matchesで0～9、A～Zの3桁の値を取得しかつ2個の配列を取得
-				if (!items2[0].matches("[0-9A-Za-z]{8}$")|| items2.length != 2) {
-					System.out.println("商品定義ファイルのフォーマットが不正です");
-					return false;
-				}
-				nameMap.put(items2[0],items2[1]);
-				saleMap.put(items2[0],0l);
-			}
-		}catch(FileNotFoundException e){
-			System.out.println("商品定義ファイルが存在しません");
-			return false;
-		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return false;
-		}finally{
-			try{
-				if(cr  != null){
-					cr.close();
 					return true;
 				}
 			}catch(IOException e){
@@ -105,8 +67,12 @@ public class CalculateSale {
 		return;
 		}
 
-		branchFile(branchSaleMap,branchNameMap,args[0], "branch.lst");
-		commodityFile(commodityMap,commodityNameMap,args[0], "commodity.lst");
+        String branchName ="支店";
+        String m="[0-9]{3}$";
+		Filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,m);
+		String commodityName ="商品";
+		String m2="[0-9A-Za-z]{8}$";
+		Filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,m2);
 
 		BufferedReader rl =null;
 		try {
@@ -152,7 +118,7 @@ public class CalculateSale {
 				// 支店集計
 				if(branchSaleMap.containsKey(rcdData.get(0)) == false){
 					System.out.println(rcdList.get(i).getName()+"の支店コードが不正です");
-					return;
+					return ;
 				}
 				branchSaleMap.get(rcdData.get(0));
 				rcdData.get(2);
