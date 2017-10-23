@@ -17,15 +17,15 @@ import java.util.Map.Entry;
 //今後　合計でMapを4つ使用することになる。
 //キャストは売上額のときだけ使用する
 public class CalculateSale {
-	public static boolean  Filein(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,String  dirPath, String fileName,String Name,String match){
+	public static boolean  filein(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,String  dirPath,
+			String fileName,String Name,String match){
 		BufferedReader br = null;
 		try {
 			File Filein = new File(dirPath,fileName);
 			FileReader bf = new FileReader(Filein);
 			br = new BufferedReader(bf);
 			String s;
-			while((s = br.readLine()) != null)
-			{
+			while((s = br.readLine()) != null){
 				String[] items = s.split(",",-1);
 				////matchesで0～9、A～Zの3桁の値を取得しかつ2個の配列を取得
 
@@ -66,13 +66,17 @@ public class CalculateSale {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
-
 		String branchName ="支店";
 		String mat="[0-9]{3}$";
-		Filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,mat);
 		String commodityName ="商品";
 		String mat2="[0-9A-Za-z]{8}$";
-		Filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,mat2);
+		if(filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,mat) == false
+				||filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,mat2) == false){
+			return;
+		}
+
+		filein(branchSaleMap,branchNameMap,args[0],"branch.lst",branchName,mat);
+		filein(commodityMap,commodityNameMap,args[0],"commodity.lst",commodityName,mat2);
 
 		BufferedReader rl =null;
 		try {
@@ -172,7 +176,8 @@ public class CalculateSale {
 	  FileOut(commodityMap,commodityNameMap,args[0],"commodity.out");
 	}
 
-	public static boolean  FileOut(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,String  dirPath, String fileName){
+	public static boolean  FileOut(HashMap<String , Long>saleMap,HashMap<String , String>nameMap,
+			String  dirPath, String fileName){
 		BufferedWriter bw = null;
 		try {
 			//Listの生成
